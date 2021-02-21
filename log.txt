@@ -1,0 +1,692 @@
+Sending build context to Docker daemon  127.6MB
+Step 1/5 : FROM ghcr.io/toltec-dev/base:latest
+ ---> 0ed7054eb63d
+Step 2/5 : RUN export DEBIAN_FRONTEND=noninteractive     && apt-get update     && apt-get install -yy git build-essential autoconf libtool        autoconf-archive gyp python ninja-build
+ ---> Using cache
+ ---> cb71db8583f4
+Step 3/5 : RUN cd /root     && curl https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_62_RTM/src/nss-3.62-with-nspr-4.29.tar.gz -o nss-3.62-with-nspr-4.29.tar.gz     && tar xf nss-3.62-with-nspr-4.29.tar.gz
+ ---> Using cache
+ ---> 6b6aecf3c93d
+Step 4/5 : RUN cd /root/nss-3.62/nspr     && ./configure --host=arm --target=$CHOST --prefix=/usr     && make     && DESTDIR="$SYSROOT" make install
+ ---> Using cache
+ ---> 99788d62937d
+Step 5/5 : RUN cd /root/nss-3.62/nss     && AS="${CROSS_COMPILE}as" CC="${CROSS_COMPILE}gcc"        CXX="${CROSS_COMPILE}g++" CPP="${CROSS_COMPILE}cpp"        LD="${CROSS_COMPILE}ld" AR="${CROSS_COMPILE}ar"        RANLIB="${CROSS_COMPILE}ranlib" STRIP="${CROSS_COMPILE}strip"        LDFLAGS="-Wl,-rpath-link=.lib --sysroot=$SYSROOT $LDFLAGS"        ./build.sh --with-nspr=$SYSROOT/usr/include/nspr:$SYSROOT/lib        --target=arm-unknown-linux-gnueabihf -o
+ ---> Running in acabe64dd113
+ninja: Entering directory `/root/nss-3.62/nss/out/Release'
+[1/1210] COPY ../../lib/util/base64.h /root/nss-3.62/dist/public/nss/base64.h
+[2/1210] COPY ../../lib/util/ciferfam.h /root/nss-3.62/dist/public/nss/ciferfam.h
+[3/1210] COPY ../../lib/util/eccutil.h /root/nss-3.62/dist/public/nss/eccutil.h
+[4/1210] COPY ../../lib/util/hasht.h /root/nss-3.62/dist/public/nss/hasht.h
+[5/1210] COPY ../../lib/util/nssb64.h /root/nss-3.62/dist/public/nss/nssb64.h
+[6/1210] COPY ../../lib/util/nssb64t.h /root/nss-3.62/dist/public/nss/nssb64t.h
+[7/1210] COPY ../../lib/util/nssilckt.h /root/nss-3.62/dist/public/nss/nssilckt.h
+[8/1210] COPY ../../lib/util/nssilock.h /root/nss-3.62/dist/public/nss/nssilock.h
+[9/1210] COPY ../../lib/util/nsslocks.h /root/nss-3.62/dist/public/nss/nsslocks.h
+[10/1210] COPY ../../lib/util/nssrwlk.h /root/nss-3.62/dist/public/nss/nssrwlk.h
+[11/1210] COPY ../../lib/util/nssrwlkt.h /root/nss-3.62/dist/public/nss/nssrwlkt.h
+[12/1210] COPY ../../lib/util/nssutil.h /root/nss-3.62/dist/public/nss/nssutil.h
+[13/1210] COPY ../../lib/util/pkcs11.h /root/nss-3.62/dist/public/nss/pkcs11.h
+[14/1210] COPY ../../lib/util/pkcs11f.h /root/nss-3.62/dist/public/nss/pkcs11f.h
+[15/1210] COPY ../../lib/util/pkcs11n.h /root/nss-3.62/dist/public/nss/pkcs11n.h
+[16/1210] COPY ../../lib/ssl/sslt.h /root/nss-3.62/dist/public/nss/sslt.h
+[17/1210] COPY ../../lib/softoken/sdb.h /root/nss-3.62/dist/private/nss/sdb.h
+[18/1210] COPY ../../lib/softoken/sftkdbt.h /root/nss-3.62/dist/private/nss/sftkdbt.h
+[19/1210] COPY ../../lib/softoken/softkver.h /root/nss-3.62/dist/private/nss/softkver.h
+[20/1210] COPY ../../lib/softoken/softoken.h /root/nss-3.62/dist/private/nss/softoken.h
+[21/1210] COPY ../../lib/softoken/softoknt.h /root/nss-3.62/dist/private/nss/softoknt.h
+[22/1210] COPY ../../lib/smime/cms.h /root/nss-3.62/dist/public/nss/cms.h
+[23/1210] COPY ../../lib/pki/nsspki.h /root/nss-3.62/dist/private/nss/nsspki.h
+[24/1210] COPY ../../lib/pki/nsspkit.h /root/nss-3.62/dist/private/nss/nsspkit.h
+[25/1210] COPY ../../lib/pki/pki.h /root/nss-3.62/dist/private/nss/pki.h
+[26/1210] COPY ../../lib/smime/cmsreclist.h /root/nss-3.62/dist/public/nss/cmsreclist.h
+[27/1210] COPY ../../lib/smime/cmst.h /root/nss-3.62/dist/public/nss/cmst.h
+[28/1210] COPY ../../lib/softoken/lowkeyi.h /root/nss-3.62/dist/public/nss/lowkeyi.h
+[29/1210] COPY ../../lib/softoken/lowkeyti.h /root/nss-3.62/dist/public/nss/lowkeyti.h
+[30/1210] COPY ../../lib/util/pkcs11p.h /root/nss-3.62/dist/public/nss/pkcs11p.h
+[31/1210] COPY ../../lib/util/pkcs11t.h /root/nss-3.62/dist/public/nss/pkcs11t.h
+[32/1210] COPY ../../lib/util/pkcs11u.h /root/nss-3.62/dist/public/nss/pkcs11u.h
+[33/1210] COPY ../../lib/util/pkcs11uri.h /root/nss-3.62/dist/public/nss/pkcs11uri.h
+[34/1210] COPY ../../lib/util/pkcs1sig.h /root/nss-3.62/dist/public/nss/pkcs1sig.h
+[35/1210] COPY ../../lib/util/portreg.h /root/nss-3.62/dist/public/nss/portreg.h
+[36/1210] COPY ../../lib/util/secasn1.h /root/nss-3.62/dist/public/nss/secasn1.h
+[37/1210] COPY ../../lib/util/secasn1t.h /root/nss-3.62/dist/public/nss/secasn1t.h
+[38/1210] COPY ../../lib/util/seccomon.h /root/nss-3.62/dist/public/nss/seccomon.h
+[39/1210] COPY ../../lib/util/secder.h /root/nss-3.62/dist/public/nss/secder.h
+[40/1210] COPY ../../lib/util/secdert.h /root/nss-3.62/dist/public/nss/secdert.h
+[41/1210] COPY ../../lib/util/secdig.h /root/nss-3.62/dist/public/nss/secdig.h
+[42/1210] COPY ../../lib/util/secdigt.h /root/nss-3.62/dist/public/nss/secdigt.h
+[43/1210] COPY ../../lib/util/secerr.h /root/nss-3.62/dist/public/nss/secerr.h
+[44/1210] COPY ../../lib/util/secitem.h /root/nss-3.62/dist/public/nss/secitem.h
+[45/1210] COPY ../../lib/util/secoid.h /root/nss-3.62/dist/public/nss/secoid.h
+[46/1210] COPY ../../lib/util/secoidt.h /root/nss-3.62/dist/public/nss/secoidt.h
+[47/1210] COPY ../../lib/util/secport.h /root/nss-3.62/dist/public/nss/secport.h
+[48/1210] COPY ../../lib/util/utilmodt.h /root/nss-3.62/dist/public/nss/utilmodt.h
+[49/1210] COPY ../../lib/util/utilpars.h /root/nss-3.62/dist/public/nss/utilpars.h
+[50/1210] COPY ../../lib/util/utilparst.h /root/nss-3.62/dist/public/nss/utilparst.h
+[51/1210] COPY ../../lib/util/utilrename.h /root/nss-3.62/dist/public/nss/utilrename.h
+[52/1210] COPY ../../lib/util/templates.c /root/nss-3.62/dist/private/nss/templates.c
+[53/1210] COPY ../../lib/util/verref.h /root/nss-3.62/dist/private/nss/verref.h
+[54/1210] COPY ../../lib/ssl/preenc.h /root/nss-3.62/dist/public/nss/preenc.h
+[55/1210] COPY ../../lib/ssl/sslproto.h /root/nss-3.62/dist/public/nss/sslproto.h
+[56/1210] COPY ../../lib/ssl/sslerr.h /root/nss-3.62/dist/public/nss/sslerr.h
+[57/1210] COPY ../../lib/ssl/sslexp.h /root/nss-3.62/dist/public/nss/sslexp.h
+[58/1210] COPY ../../lib/sqlite/sqlite3.h /root/nss-3.62/dist/private/nss/sqlite3.h
+[59/1210] COPY ../../lib/softoken/pkcs11ni.h /root/nss-3.62/dist/private/nss/pkcs11ni.h
+[60/1210] COPY ../../lib/ssl/ssl.h /root/nss-3.62/dist/public/nss/ssl.h
+[61/1210] COPY ../../lib/pk11wrap/pk11pub.h /root/nss-3.62/dist/public/nss/pk11pub.h
+[62/1210] COPY ../../lib/pk11wrap/pk11sdr.h /root/nss-3.62/dist/public/nss/pk11sdr.h
+[63/1210] STAMP obj/lib/util/lib_util_exports.actions_rules_copies.stamp
+[64/1210] COPY ../../lib/smime/smime.h /root/nss-3.62/dist/public/nss/smime.h
+[65/1210] COPY ../../lib/smime/cmslocal.h /root/nss-3.62/dist/private/nss/cmslocal.h
+[66/1210] COPY ../../lib/pkcs12/p12plcy.h /root/nss-3.62/dist/public/nss/p12plcy.h
+[67/1210] COPY ../../lib/pkcs12/p12t.h /root/nss-3.62/dist/public/nss/p12t.h
+[68/1210] COPY ../../lib/pki/pki3hack.h /root/nss-3.62/dist/private/nss/pki3hack.h
+[69/1210] STAMP obj/lib/softoken/lib_softoken_exports.actions_rules_copies.stamp
+[70/1210] STAMP obj/lib/ssl/lib_ssl_exports.actions_rules_copies.stamp
+[71/1210] COPY ../../lib/pki/pkim.h /root/nss-3.62/dist/private/nss/pkim.h
+[72/1210] COPY ../../lib/pki/pkistore.h /root/nss-3.62/dist/private/nss/pkistore.h
+[73/1210] COPY ../../lib/pki/pkit.h /root/nss-3.62/dist/private/nss/pkit.h
+[74/1210] COPY ../../lib/pki/pkitm.h /root/nss-3.62/dist/private/nss/pkitm.h
+[75/1210] STAMP obj/lib/smime/lib_smime_exports.actions_rules_copies.stamp
+[76/1210] COPY ../../lib/pkcs7/pkcs7t.h /root/nss-3.62/dist/public/nss/pkcs7t.h
+[77/1210] COPY ../../lib/pkcs7/secmime.h /root/nss-3.62/dist/public/nss/secmime.h
+[78/1210] COPY ../../lib/pkcs7/secpkcs7.h /root/nss-3.62/dist/public/nss/secpkcs7.h
+[79/1210] COPY ../../lib/pkcs7/p7local.h /root/nss-3.62/dist/private/nss/p7local.h
+[80/1210] COPY ../../lib/pkcs12/p12.h /root/nss-3.62/dist/public/nss/p12.h
+[81/1210] COPY ../../lib/pk11wrap/pk11func.h /root/nss-3.62/dist/public/nss/pk11func.h
+[82/1210] COPY ../../lib/pk11wrap/pk11hpke.h /root/nss-3.62/dist/public/nss/pk11hpke.h
+[83/1210] COPY ../../lib/pk11wrap/pk11pqg.h /root/nss-3.62/dist/public/nss/pk11pqg.h
+[84/1210] STAMP obj/lib/pki/lib_pki_exports.actions_rules_copies.stamp
+[85/1210] COPY ../../lib/pkcs12/pkcs12.h /root/nss-3.62/dist/public/nss/pkcs12.h
+[86/1210] COPY ../../lib/pkcs12/pkcs12t.h /root/nss-3.62/dist/public/nss/pkcs12t.h
+[87/1210] COPY ../../lib/nss/nss.h /root/nss-3.62/dist/public/nss/nss.h
+[88/1210] STAMP obj/lib/pkcs7/lib_pkcs7_exports.actions_rules_copies.stamp
+[89/1210] COPY ../../lib/nss/nssoptions.h /root/nss-3.62/dist/private/nss/nssoptions.h
+[90/1210] COPY ../../lib/mozpkix/include/pkix-test/pkixtestutil.h /root/nss-3.62/dist/public/nss/mozpkix/test/pkixtestutil.h
+[91/1210] COPY ../../lib/pk11wrap/pk11priv.h /root/nss-3.62/dist/public/nss/pk11priv.h
+[92/1210] STAMP obj/lib/pkcs12/lib_pkcs12_exports.actions_rules_copies.stamp
+[93/1210] COPY ../../lib/nss/nssrenam.h /root/nss-3.62/dist/private/nss/nssrenam.h
+[94/1210] COPY ../../lib/certhigh/ocsp.h /root/nss-3.62/dist/public/nss/ocsp.h
+[95/1210] COPY ../../lib/ckfw/builtins/nssckbi.h /root/nss-3.62/dist/public/nss/nssckbi.h
+[96/1210] COPY ../../lib/pk11wrap/secmod.h /root/nss-3.62/dist/public/nss/secmod.h
+[97/1210] COPY ../../lib/pk11wrap/dev3hack.h /root/nss-3.62/dist/private/nss/dev3hack.h
+[98/1210] COPY ../../lib/pk11wrap/secmodi.h /root/nss-3.62/dist/private/nss/secmodi.h
+[99/1210] COPY ../../lib/pk11wrap/secmodt.h /root/nss-3.62/dist/public/nss/secmodt.h
+[100/1210] COPY ../../lib/pk11wrap/secpkcs5.h /root/nss-3.62/dist/public/nss/secpkcs5.h
+[101/1210] COPY ../../lib/pk11wrap/secmodti.h /root/nss-3.62/dist/private/nss/secmodti.h
+[102/1210] COPY ../../lib/mozpkix/include/pkix-test/pkixtestnss.h /root/nss-3.62/dist/public/nss/mozpkix/test/pkixtestnss.h
+[103/1210] STAMP obj/lib/nss/lib_nss_exports.actions_rules_copies.stamp
+[104/1210] COPY ../../lib/jar/jar.h /root/nss-3.62/dist/public/nss/jar.h
+[105/1210] STAMP obj/lib/pk11wrap/lib_pk11wrap_exports.actions_rules_copies.stamp
+[106/1210] STAMP obj/lib/mozpkix/lib_mozpkix_test_exports.actions_rules_copies.stamp
+[107/1210] COPY ../../cpputil/nss_scoped_ptrs.h /root/nss-3.62/dist/public/nss/mozpkix/nss_scoped_ptrs.h
+[108/1210] COPY ../../lib/mozpkix/include/pkix/Input.h /root/nss-3.62/dist/public/nss/mozpkix/Input.h
+[109/1210] COPY ../../lib/mozpkix/include/pkix/Result.h /root/nss-3.62/dist/public/nss/mozpkix/Result.h
+[110/1210] COPY ../../lib/mozpkix/include/pkix/pkix.h /root/nss-3.62/dist/public/nss/mozpkix/pkix.h
+[111/1210] COPY ../../lib/mozpkix/include/pkix/pkixutil.h /root/nss-3.62/dist/public/nss/mozpkix/pkixutil.h
+[112/1210] COPY ../../lib/mozpkix/include/pkix/Time.h /root/nss-3.62/dist/public/nss/mozpkix/Time.h
+[113/1210] COPY ../../lib/mozpkix/include/pkix/pkixnss.h /root/nss-3.62/dist/public/nss/mozpkix/pkixnss.h
+[114/1210] COPY ../../lib/mozpkix/include/pkix/pkixtypes.h /root/nss-3.62/dist/public/nss/mozpkix/pkixtypes.h
+[115/1210] COPY ../../lib/mozpkix/include/pkix/pkixcheck.h /root/nss-3.62/dist/public/nss/mozpkix/pkixcheck.h
+[116/1210] COPY ../../lib/mozpkix/include/pkix/pkixder.h /root/nss-3.62/dist/public/nss/mozpkix/pkixder.h
+[117/1210] COPY ../../lib/jar/jar-ds.h /root/nss-3.62/dist/public/nss/jar-ds.h
+[118/1210] COPY ../../lib/jar/jarfile.h /root/nss-3.62/dist/public/nss/jarfile.h
+[119/1210] STAMP obj/lib/mozpkix/lib_mozpkix_exports.actions_rules_copies.stamp
+[120/1210] COPY ../../lib/freebl/blapit.h /root/nss-3.62/dist/public/nss/blapit.h
+[121/1210] COPY ../../lib/freebl/ecl/ecl-exp.h /root/nss-3.62/dist/public/nss/ecl-exp.h
+[122/1210] COPY ../../lib/freebl/shsign.h /root/nss-3.62/dist/public/nss/shsign.h
+[123/1210] COPY ../../lib/freebl/nsslowhash.h /root/nss-3.62/dist/public/nss/nsslowhash.h
+[124/1210] COPY ../../lib/freebl/cmac.h /root/nss-3.62/dist/private/nss/cmac.h
+[125/1210] COPY ../../lib/freebl/alghmac.h /root/nss-3.62/dist/private/nss/alghmac.h
+[126/1210] COPY ../../lib/freebl/blapi.h /root/nss-3.62/dist/private/nss/blapi.h
+[127/1210] COPY ../../lib/freebl/blake2b.h /root/nss-3.62/dist/private/nss/blake2b.h
+[128/1210] STAMP obj/lib/jar/lib_jar_exports.actions_rules_copies.stamp
+[129/1210] STAMP obj/nss_mozpkix_exports.actions_depends.stamp
+[130/1210] STAMP obj/nss_mozpkix_exports.compile_depends.stamp
+[131/1210] COPY ../../lib/freebl/chacha20poly1305.h /root/nss-3.62/dist/private/nss/chacha20poly1305.h
+[132/1210] COPY ../../lib/freebl/ec.h /root/nss-3.62/dist/private/nss/ec.h
+[133/1210] COPY ../../lib/freebl/ecl/ecl-curve.h /root/nss-3.62/dist/private/nss/ecl-curve.h
+[134/1210] COPY ../../lib/cryptohi/cryptohi.h /root/nss-3.62/dist/public/nss/cryptohi.h
+[135/1210] COPY ../../lib/cryptohi/cryptoht.h /root/nss-3.62/dist/public/nss/cryptoht.h
+[136/1210] COPY ../../lib/cryptohi/key.h /root/nss-3.62/dist/public/nss/key.h
+[137/1210] COPY ../../lib/dev/devm.h /root/nss-3.62/dist/private/nss/devm.h
+[138/1210] COPY ../../lib/dev/devt.h /root/nss-3.62/dist/private/nss/devt.h
+[139/1210] COPY ../../lib/dev/devtm.h /root/nss-3.62/dist/private/nss/devtm.h
+[140/1210] COPY ../../lib/dev/nssdev.h /root/nss-3.62/dist/private/nss/nssdev.h
+[141/1210] COPY ../../lib/dev/nssdevt.h /root/nss-3.62/dist/private/nss/nssdevt.h
+[142/1210] COPY ../../lib/freebl/ecl/ecl.h /root/nss-3.62/dist/private/nss/ecl.h
+[143/1210] COPY ../../lib/freebl/ecl/eclt.h /root/nss-3.62/dist/private/nss/eclt.h
+[144/1210] COPY ../../lib/freebl/hmacct.h /root/nss-3.62/dist/private/nss/hmacct.h
+[145/1210] COPY ../../lib/freebl/secmpi.h /root/nss-3.62/dist/private/nss/secmpi.h
+[146/1210] COPY ../../lib/freebl/secrng.h /root/nss-3.62/dist/private/nss/secrng.h
+[147/1210] COPY ../../lib/dev/ckhelper.h /root/nss-3.62/dist/private/nss/ckhelper.h
+[148/1210] COPY ../../lib/dev/dev.h /root/nss-3.62/dist/private/nss/dev.h
+[149/1210] STAMP obj/lib/freebl/lib_freebl_exports.actions_rules_copies.stamp
+[150/1210] STAMP obj/lib/dev/lib_dev_exports.actions_rules_copies.stamp
+[151/1210] COPY ../../lib/cryptohi/keyhi.h /root/nss-3.62/dist/public/nss/keyhi.h
+[152/1210] COPY ../../lib/ckfw/nssck.api /root/nss-3.62/dist/public/nss/nssck.api
+[153/1210] COPY ../../lib/ckfw/nssckepv.h /root/nss-3.62/dist/public/nss/nssckepv.h
+[154/1210] COPY ../../lib/ckfw/nssckft.h /root/nss-3.62/dist/public/nss/nssckft.h
+[155/1210] COPY ../../lib/ckfw/nssckfw.h /root/nss-3.62/dist/public/nss/nssckfw.h
+[156/1210] COPY ../../lib/cryptohi/keyt.h /root/nss-3.62/dist/public/nss/keyt.h
+[157/1210] COPY ../../lib/cryptohi/keythi.h /root/nss-3.62/dist/public/nss/keythi.h
+[158/1210] COPY ../../lib/cryptohi/sechash.h /root/nss-3.62/dist/public/nss/sechash.h
+[159/1210] COPY ../../lib/cryptohi/keyi.h /root/nss-3.62/dist/private/nss/keyi.h
+[160/1210] COPY ../../lib/crmf/cmmf.h /root/nss-3.62/dist/public/nss/cmmf.h
+[161/1210] COPY ../../lib/crmf/cmmft.h /root/nss-3.62/dist/public/nss/cmmft.h
+[162/1210] COPY ../../lib/crmf/crmf.h /root/nss-3.62/dist/public/nss/crmf.h
+[163/1210] COPY ../../lib/crmf/crmft.h /root/nss-3.62/dist/public/nss/crmft.h
+[164/1210] COPY ../../lib/crmf/cmmfi.h /root/nss-3.62/dist/private/nss/cmmfi.h
+[165/1210] COPY ../../lib/crmf/cmmfit.h /root/nss-3.62/dist/private/nss/cmmfit.h
+[166/1210] COPY ../../lib/crmf/crmfi.h /root/nss-3.62/dist/private/nss/crmfi.h
+[167/1210] COPY ../../lib/certhigh/ocspt.h /root/nss-3.62/dist/public/nss/ocspt.h
+[168/1210] STAMP obj/lib/cryptohi/lib_cryptohi_exports.actions_rules_copies.stamp
+[169/1210] COPY ../../lib/crmf/crmfit.h /root/nss-3.62/dist/private/nss/crmfit.h
+[170/1210] COPY ../../lib/certhigh/ocspi.h /root/nss-3.62/dist/private/nss/ocspi.h
+[171/1210] COPY ../../lib/certhigh/ocspti.h /root/nss-3.62/dist/private/nss/ocspti.h
+[172/1210] COPY ../../lib/ckfw/nssckfwc.h /root/nss-3.62/dist/public/nss/nssckfwc.h
+[173/1210] COPY ../../lib/ckfw/nssckfwt.h /root/nss-3.62/dist/public/nss/nssckfwt.h
+[174/1210] COPY ../../lib/ckfw/nssckg.h /root/nss-3.62/dist/public/nss/nssckg.h
+[175/1210] COPY ../../lib/ckfw/nssckmdt.h /root/nss-3.62/dist/public/nss/nssckmdt.h
+[176/1210] COPY ../../lib/ckfw/nssckt.h /root/nss-3.62/dist/public/nss/nssckt.h
+[177/1210] COPY ../../lib/ckfw/ck.h /root/nss-3.62/dist/private/nss/ck.h
+[178/1210] STAMP obj/lib/crmf/lib_crmf_exports.actions_rules_copies.stamp
+[179/1210] COPY ../../lib/ckfw/ckfw.h /root/nss-3.62/dist/private/nss/ckfw.h
+[180/1210] COPY ../../lib/ckfw/ckfwm.h /root/nss-3.62/dist/private/nss/ckfwm.h
+[181/1210] COPY ../../lib/ckfw/ckfwtm.h /root/nss-3.62/dist/private/nss/ckfwtm.h
+[182/1210] COPY ../../lib/certdb/cert.h /root/nss-3.62/dist/public/nss/cert.h
+[183/1210] STAMP obj/lib/certhigh/lib_certhigh_exports.actions_rules_copies.stamp
+[184/1210] COPY ../../lib/base/nssbaset.h /root/nss-3.62/dist/public/nss/nssbaset.h
+[185/1210] COPY ../../lib/ckfw/ckmd.h /root/nss-3.62/dist/private/nss/ckmd.h
+[186/1210] COPY ../../lib/ckfw/ckt.h /root/nss-3.62/dist/private/nss/ckt.h
+[187/1210] COPY ../../lib/certdb/certdb.h /root/nss-3.62/dist/public/nss/certdb.h
+[188/1210] COPY ../../lib/certdb/certt.h /root/nss-3.62/dist/public/nss/certt.h
+[189/1210] COPY ../../lib/certdb/certi.h /root/nss-3.62/dist/private/nss/certi.h
+[190/1210] COPY ../../lib/certdb/certxutl.h /root/nss-3.62/dist/private/nss/certxutl.h
+[191/1210] COPY ../../lib/certdb/genname.h /root/nss-3.62/dist/private/nss/genname.h
+[192/1210] COPY ../../lib/certdb/xconst.h /root/nss-3.62/dist/private/nss/xconst.h
+[193/1210] COPY ../../lib/base/nssbase.h /root/nss-3.62/dist/public/nss/nssbase.h
+[194/1210] COPY ../../lib/base/base.h /root/nss-3.62/dist/private/nss/base.h
+[195/1210] COPY ../../lib/base/baset.h /root/nss-3.62/dist/private/nss/baset.h
+[196/1210] STAMP obj/lib/ckfw/lib_ckfw_exports.actions_rules_copies.stamp
+[197/1210] COPY ../../cmd/lib/basicutil.h /root/nss-3.62/dist/private/nss/basicutil.h
+[198/1210] COPY ../../cmd/lib/pk11table.h /root/nss-3.62/dist/private/nss/pk11table.h
+[199/1210] STAMP obj/lib/certdb/lib_certdb_exports.actions_rules_copies.stamp
+[200/1210] STAMP obj/lib/base/lib_base_exports.actions_rules_copies.stamp
+[201/1210] COPY ../../cmd/lib/secutil.h /root/nss-3.62/dist/private/nss/secutil.h
+[202/1210] STAMP obj/cmd/lib/cmd_lib_exports.actions_rules_copies.stamp
+[203/1210] STAMP obj/nss_exports.actions_depends.stamp
+[204/1210] STAMP obj/nss_exports.compile_depends.stamp
+[205/1210] STAMP obj/lib/mozpkix/mozpkix-testlib.actions_depends.stamp
+[206/1210] STAMP obj/lib/mozpkix/mozpkix.actions_depends.stamp
+[207/1210] STAMP obj/lib/freebl/freeblpriv3.actions_depends.stamp
+[208/1210] STAMP obj/lib/freebl/freebl3.actions_depends.stamp
+[209/1210] CC obj/lib/ssl/ssl.authcert.o
+[210/1210] CC obj/lib/util/nssutil.derdec.o
+[211/1210] CC obj/lib/pk11wrap/pk11wrap.pk11pqg.o
+[212/1210] CC obj/lib/pk11wrap/pk11wrap.pk11pk12.o
+[213/1210] CC obj/lib/pk11wrap/pk11wrap.pk11sdr.o
+[214/1210] CC obj/lib/util/nssutil.dersubr.o
+[215/1210] CC obj/lib/util/nssutil.errstrs.o
+[216/1210] CC obj/lib/util/nssutil.derenc.o
+[217/1210] CC obj/lib/util/nssutil.dertime.o
+[218/1210] CC obj/lib/util/nssutil.nssilock.o
+[219/1210] CC obj/lib/util/nssutil.nssrwlk.o
+[220/1210] CC obj/lib/pk11wrap/pk11wrap.pk11util.o
+[221/1210] CC obj/lib/util/nssutil.nssb64d.o
+[222/1210] CC obj/lib/nss/nss_static.nssinit.o
+[223/1210] CC obj/lib/util/nssutil.nssb64e.o
+[224/1210] CC obj/lib/util/nssutil.oidstring.o
+[225/1210] CC obj/lib/util/nssutil.pkcs1sig.o
+[226/1210] CC obj/lib/util/nssutil.secalgid.o
+[227/1210] CC obj/lib/util/nssutil.secasn1u.o
+[228/1210] CC obj/lib/util/nssutil.portreg.o
+[229/1210] CC obj/lib/util/nssutil.pkcs11uri.o
+[230/1210] CC obj/lib/pk11wrap/pk11wrap.pk11slot.o
+[231/1210] CC obj/lib/util/nssutil.secdig.o
+[232/1210] CC obj/lib/util/nssutil.quickder.o
+[233/1210] CC obj/lib/util/nssutil.secasn1e.o
+[234/1210] CC obj/lib/util/nssutil.secload.o
+[235/1210] CC obj/lib/pk11wrap/pk11wrap.pk11skey.o
+[236/1210] CC obj/lib/util/nssutil.sectime.o
+[237/1210] CC obj/lib/util/nssutil.secitem.o
+[238/1210] CC obj/lib/util/nssutil.secoid.o
+[239/1210] STAMP obj/gtests/util_gtest/util_gtest.compile_depends.stamp
+[240/1210] CC obj/lib/util/nssutil.templates.o
+[241/1210] CC obj/lib/util/nssutil.secport.o
+[242/1210] CC obj/lib/util/nssutil.utf8.o
+[243/1210] CC obj/lib/util/nssutil.secasn1d.o
+[244/1210] CC obj/lib/util/nssutil.utilmod.o
+[245/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_jm.o
+[246/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_jac.o
+[247/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_mont.o
+[248/1210] CC obj/lib/util/nssutil.utilpars.o
+[249/1210] AR libnssutil.a
+[250/1210] STAMP obj/lib/util/nssutil3.actions_depends.stamp
+[251/1210] ACTION nssutil3: generate_mapfile_c3520f8b159fb926edc746c920429812
+[252/1210] STAMP obj/lib/sysinit/nsssysinit_static.compile_depends.stamp
+[253/1210] STAMP obj/gtests/sysinit_gtest/sysinit_gtest.compile_depends.stamp
+[254/1210] CC obj/coreconf/nssutil3.empty.o
+[255/1210] SOLINK /root/nss-3.62/dist/Release/lib/libnssutil3.so
+[256/1210] STAMP obj/lib/sysinit/nsssysinit_static.actions_depends.stamp
+[257/1210] CC obj/lib/sysinit/nsssysinit_static.nsssysinit.o
+[258/1210] AR libnsssysinit_static.a
+[259/1210] STAMP obj/lib/sysinit/nsssysinit.actions_depends.stamp
+[260/1210] CXX obj/gtests/util_gtest/util_gtest.util_gtests.o
+[261/1210] ACTION nsssysinit: generate_mapfile_1dea05e984d6034669cb5453b66b1aad
+[262/1210] CC obj/coreconf/nsssysinit.empty.o
+[263/1210] CXX obj/gtests/util_gtest/util_gtest.util_memcmpzero_unittest.o
+[264/1210] SOLINK /root/nss-3.62/dist/Release/lib/libnsssysinit.so
+[265/1210] CC obj/lib/freebl/freebl_static.fipsfreebl.o
+[266/1210] CC obj/lib/freebl/freebl_static.blinit.o
+[267/1210] CC obj/lib/freebl/freebl_static.freeblver.o
+[268/1210] CXX obj/gtests/util_gtest/util_gtest.util_b64_unittest.o
+[269/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_secp521r1.o
+[270/1210] CXX obj/gtests/util_gtest/util_gtest.util_pkcs11uri_unittest.o
+[271/1210] CC obj/lib/ssl/ssl.cmpcert.o
+[272/1210] CC obj/lib/freebl/freebl_static.hmacct.o
+[273/1210] CC obj/lib/freebl/freebl_static.gcm.o
+[274/1210] CC obj/lib/ssl/ssl.prelib.o
+[275/1210] CC obj/lib/ssl/ssl.selfencrypt.o
+[276/1210] CC obj/lib/ssl/ssl.dtlscon.o
+[277/1210] CXX obj/gtests/sysinit_gtest/sysinit_gtest.sysinit_gtest.o
+[278/1210] CC obj/lib/ssl/ssl.dtls13con.o
+[279/1210] CC obj/lib/ssl/ssl.ssl3ecc.o
+[280/1210] CC obj/lib/ssl/ssl.ssl3ext.o
+[281/1210] CC obj/lib/ssl/ssl.sslauth.o
+[282/1210] CC obj/lib/ssl/ssl.sslbloom.o
+[283/1210] CC obj/lib/ssl/ssl.ssl3gthr.o
+[284/1210] CC obj/lib/ssl/ssl.sslcon.o
+[285/1210] CC obj/lib/ssl/ssl.ssl3exthandle.o
+[286/1210] CC obj/lib/ssl/ssl.ssldef.o
+[287/1210] CC obj/lib/ssl/ssl.sslcert.o
+[288/1210] CXX obj/gtests/util_gtest/util_gtest.util_aligned_malloc_unittest.o
+[289/1210] CC obj/lib/ssl/ssl.sslerr.o
+[290/1210] CC obj/lib/ssl/ssl.sslenum.o
+[291/1210] CC obj/lib/ssl/ssl.sslencode.o
+[292/1210] CC obj/lib/ssl/ssl.sslerrstrs.o
+[293/1210] CC obj/lib/smime/smime.cmsasn1.o
+[294/1210] CC obj/lib/smime/smime.cmsattr.o
+[295/1210] CC obj/lib/smime/smime.cmscinfo.o
+[296/1210] CC obj/lib/smime/smime.cmscipher.o
+[297/1210] CC obj/lib/ssl/ssl.sslinit.o
+[298/1210] CC obj/lib/ssl/ssl.sslgrp.o
+[299/1210] CXX obj/gtests/sysinit_gtest/sysinit_gtest.getUserDB_unittest.o
+[300/1210] CC obj/lib/smime/smime.cmsdecode.o
+[301/1210] CC obj/lib/ssl/ssl.sslmutex.o
+[302/1210] CC obj/lib/ssl/ssl.sslinfo.o
+[303/1210] CC obj/lib/ssl/ssl.sslreveal.o
+[304/1210] CC obj/lib/ssl/ssl.sslspec.o
+[305/1210] CC obj/lib/ssl/ssl.sslnonce.o
+[306/1210] CC obj/lib/ssl/ssl.sslprimitive.o
+[307/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_secp384r1.o
+[308/1210] CC obj/lib/ssl/ssl.sslver.o
+[309/1210] CC obj/lib/ssl/ssl.ssltrace.o
+[310/1210] CC obj/lib/ssl/ssl.sslsecur.o
+[311/1210] CC obj/lib/ssl/ssl.sslsnce.o
+[312/1210] CC obj/lib/ssl/ssl.tls13hashstate.o
+[313/1210] CC obj/lib/ssl/ssl.tls13exthandle.o
+[314/1210] CC obj/lib/ssl/ssl.tls13hkdf.o
+[315/1210] CC obj/lib/ssl/ssl.tls13psk.o
+[316/1210] CC obj/lib/ssl/ssl.tls13replay.o
+[317/1210] CC obj/lib/ssl/ssl.tls13ech.o
+[318/1210] CC obj/lib/ssl/ssl.unix_err.o
+[319/1210] CC obj/lib/ssl/ssl.tls13subcerts.o
+[320/1210] CC obj/lib/smime/smime.cmsarray.o
+[321/1210] CC obj/lib/smime/smime.cmsdigdata.o
+[322/1210] CC obj/lib/smime/smime.cmsdigest.o
+[323/1210] CC obj/lib/ssl/ssl.sslsock.o
+[324/1210] CC obj/lib/smime/smime.cmsencdata.o
+[325/1210] CC obj/lib/smime/smime.cmsmessage.o
+[326/1210] CC obj/lib/smime/smime.cmspubkey.o
+[327/1210] CC obj/lib/smime/smime.cmsenvdata.o
+[328/1210] CC obj/lib/smime/smime.cmsencode.o
+[329/1210] CC obj/lib/smime/smime.cmsreclist.o
+[330/1210] CC obj/lib/ssl/ssl.ssl3con.o
+[331/1210] CC obj/lib/smime/smime.cmsrecinfo.o
+[332/1210] CC obj/lib/smime/smime.cmsudf.o
+[333/1210] CC obj/lib/smime/smime.cmsutil.o
+[334/1210] CC obj/lib/smime/smime.smimemessage.o
+[335/1210] CC obj/lib/smime/smime.cmssiginfo.o
+[336/1210] CC obj/lib/smime/smime.cmssigdata.o
+[337/1210] CC obj/lib/ssl/ssl.tls13con.o
+[338/1210] CC obj/lib/pki/nsspki.asymmkey.o
+[339/1210] AR libssl.a
+[340/1210] CC obj/lib/pki/nsspki.certdecode.o
+[341/1210] CC obj/lib/pki/nsspki.symmkey.o
+[342/1210] CC obj/lib/pki/nsspki.pkistore.o
+[343/1210] CC obj/lib/pki/nsspki.cryptocontext.o
+[344/1210] CC obj/lib/pki/nsspki.certificate.o
+[345/1210] CC obj/lib/pki/nsspki.pkibase.o
+[346/1210] CC obj/lib/smime/smime.smimever.o
+[347/1210] CC obj/lib/pki/nsspki.tdcache.o
+[348/1210] CC obj/lib/pki/nsspki.pki3hack.o
+[349/1210] CC obj/lib/smime/smime.smimeutil.o
+[350/1210] CC obj/lib/pkcs7/pkcs7.certread.o
+[351/1210] CC obj/lib/pkcs12/pkcs12.p12creat.o
+[352/1210] AR libsmime.a
+[353/1210] CC obj/lib/pkcs12/pkcs12.p12dec.o
+[354/1210] CC obj/lib/pki/nsspki.trustdomain.o
+[355/1210] AR libnsspki.a
+[356/1210] CC obj/lib/pkcs7/pkcs7.p7common.o
+[357/1210] CC obj/lib/pkcs12/pkcs12.p12local.o
+[358/1210] CC obj/lib/pkcs7/pkcs7.p7create.o
+[359/1210] CC obj/lib/pkcs12/pkcs12.p12e.o
+[360/1210] CC obj/lib/pkcs7/pkcs7.p7local.o
+[361/1210] CC obj/lib/pkcs7/pkcs7.p7encode.o
+[362/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11list.o
+[363/1210] CC obj/lib/pkcs7/pkcs7.secmime.o
+[364/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11kea.o
+[365/1210] CC obj/lib/pkcs7/pkcs7.p7decode.o
+[366/1210] AR libpkcs7.a
+[367/1210] CC obj/lib/pkcs12/pkcs12.p12plcy.o
+[368/1210] CC obj/lib/pkcs12/pkcs12.p12d.o
+[369/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11nobj.o
+[370/1210] CC obj/lib/pkcs12/pkcs12.p12tmpl.o
+[371/1210] CC obj/lib/pk11wrap/pk11wrap.dev3hack.o
+[372/1210] AR libpkcs12.a
+[373/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11merge.o
+[374/1210] STAMP obj/lib/smime/smime3_deps.actions_depends.stamp
+[375/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11mech.o
+[376/1210] CC obj/lib/pk11wrap/pk11wrap.pk11hpke.o
+[377/1210] CC obj/lib/pk11wrap/pk11wrap.pk11auth.o
+[378/1210] CC obj/lib/pk11wrap/pk11wrap.pk11err.o
+[379/1210] CC obj/lib/pk11wrap/pk11wrap.pk11kea.o
+[380/1210] CC obj/lib/pk11wrap/pk11wrap.pk11list.o
+[381/1210] CC obj/lib/pk11wrap/pk11wrap.pk11cxt.o
+[382/1210] CC obj/lib/pk11wrap/pk11wrap.pk11akey.o
+[383/1210] STAMP obj/lib/mozpkix/mozpkix-testlib.compile_depends.stamp
+[384/1210] CC obj/lib/pk11wrap/pk11wrap.pk11nobj.o
+[385/1210] CC obj/lib/pk11wrap/pk11wrap.pk11merge.o
+[386/1210] CC obj/lib/pk11wrap/pk11wrap.pk11cert.o
+[387/1210] CC obj/lib/pk11wrap/pk11wrap.pk11mech.o
+[388/1210] CC obj/lib/nss/nss_static.nssver.o
+[389/1210] CC obj/lib/nss/nss_static.nssoptions.o
+[390/1210] STAMP obj/lib/mozpkix/mozpkix.compile_depends.stamp
+[391/1210] CXX obj/gtests/util_gtest/util_gtest.util_utf8_unittest.o
+[392/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11load.o
+[393/1210] CC obj/lib/nss/nss_static.utilwrap.o
+[394/1210] AR libnss_static.a
+[395/1210] STAMP obj/gtests/freebl_gtest/freebl_gtest_deps.compile_depends.stamp
+[396/1210] STAMP obj/gtests/mozpkix_gtest/mozpkix_gtest.compile_depends.stamp
+[397/1210] CC obj/lib/pk11wrap/pk11wrap.pk11pbe.o
+[398/1210] CXX obj/lib/mozpkix/test-lib/mozpkix-testlib.pkixtestalg.o
+[399/1210] CC obj/lib/pk11wrap/pk11wrap.pk11pars.o
+[400/1210] CC obj/lib/pk11wrap/pk11wrap.pk11obj.o
+[401/1210] CXX obj/lib/mozpkix/test-lib/mozpkix-testlib.pkixtestnss.o
+[402/1210] CXX obj/gtests/google_test/gtest/src/gtest.gtest-all.o
+[403/1210] CC obj/lib/pk11wrap/pk11wrap.pk11load.o
+[404/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixbuild.o
+[405/1210] AR libgtest.a
+[406/1210] AR libpk11wrap.a
+[407/1210] STAMP obj/gtests/sysinit_gtest/sysinit_gtest.actions_depends.stamp
+[408/1210] STAMP obj/gtests/util_gtest/util_gtest.actions_depends.stamp
+[409/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixcert.o
+[410/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixcheck.o
+[411/1210] LINK /root/nss-3.62/dist/Release/bin/sysinit_gtest
+[412/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixder.o
+[413/1210] CC obj/lib/jar/jar.jarint.o
+[414/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixtime.o
+[415/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixnss.o
+[416/1210] LINK /root/nss-3.62/dist/Release/bin/util_gtest
+[417/1210] CC obj/lib/jar/jar.jar-ds.o
+[418/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixnames.o
+[419/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixverify.o
+[420/1210] ACTION freeblpriv3: generate_mapfile_bc3f0d84eb4f0417c1278ac729b2c56d
+[421/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixresult.o
+[422/1210] CC obj/lib/jar/jar.jarsign.o
+[423/1210] CC obj/lib/jar/jar.jar.o
+[424/1210] CXX obj/lib/mozpkix/lib/mozpkix.pkixocsp.o
+[425/1210] CXX obj/lib/mozpkix/test-lib/mozpkix-testlib.pkixtestutil.o
+[426/1210] AR /root/nss-3.62/dist/Release/lib/libmozpkix.a
+[427/1210] CC obj/lib/jar/jar.jarfile.o
+[428/1210] CC obj/lib/freebl/freeblpriv3.alghmac.o
+[429/1210] CC obj/lib/freebl/freeblpriv3.arcfive.o
+[430/1210] AR /root/nss-3.62/dist/Release/lib/libmozpkix-testlib.a
+[431/1210] CC obj/lib/freebl/freeblpriv3.aeskeywrap.o
+[432/1210] CC obj/lib/freebl/freeblpriv3.cmac.o
+[433/1210] CC obj/lib/freebl/freeblpriv3.crypto_primitives.o
+[434/1210] CC obj/lib/freebl/freeblpriv3.chacha20poly1305.o
+[435/1210] CC obj/lib/freebl/freeblpriv3.arcfour.o
+[436/1210] CC obj/lib/jar/jar.jarver.o
+[437/1210] AR libjar.a
+[438/1210] CC obj/lib/freebl/freeblpriv3.cts.o
+[439/1210] CC obj/lib/freebl/freebl_static.jpake.o
+[440/1210] CC obj/lib/freebl/freeblpriv3.desblapi.o
+[441/1210] CC obj/lib/freebl/freeblpriv3.ctr.o
+[442/1210] CC obj/lib/freebl/freeblpriv3.des.o
+[443/1210] CC obj/lib/freebl/freeblpriv3.ecdecode.o
+[444/1210] CC obj/lib/freebl/freeblpriv3.dh.o
+[445/1210] CC obj/lib/freebl/ecl/freeblpriv3.ec_naf.o
+[446/1210] CC obj/lib/freebl/freeblpriv3.dsa.o
+[447/1210] CC obj/lib/freebl/freeblpriv3.drbg.o
+[448/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecl.o
+[449/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_25519.o
+[450/1210] CC obj/lib/freebl/freeblpriv3.ec.o
+[451/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecl_mult.o
+[452/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_521.o
+[453/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_256.o
+[454/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_384.o
+[455/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_aff.o
+[456/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_mont.o
+[457/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_jm.o
+[458/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_jac.o
+[459/1210] CC obj/lib/freebl/freeblpriv3.fipsfreebl.o
+[460/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecl_gf.o
+[461/1210] CC obj/lib/freebl/freeblpriv3.freeblver.o
+[462/1210] CC obj/lib/freebl/freeblpriv3.camellia.o
+[463/1210] CC obj/lib/freebl/freeblpriv3.blinit.o
+[464/1210] CC obj/lib/freebl/freeblpriv3.blake2b.o
+[465/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_256_32.o
+[466/1210] CC obj/lib/freebl/freebl_static.ldvector.o
+[467/1210] CC obj/lib/freebl/freeblpriv3.hmacct.o
+[468/1210] CC obj/lib/freebl/mpi/freebl_static.mpcpucache.o
+[469/1210] CC obj/lib/freebl/freebl_static.md2.o
+[470/1210] CC obj/lib/freebl/freeblpriv3.gcm.o
+[471/1210] CC obj/lib/freebl/freebl_static.md5.o
+[472/1210] CC obj/lib/freebl/mpi/freebl_static.mplogic.o
+[473/1210] CC obj/lib/freebl/freebl_static.rawhash.o
+[474/1210] CC obj/lib/freebl/mpi/freebl_static.mp_gf2m.o
+[475/1210] CC obj/lib/freebl/mpi/freebl_static.mpprime.o
+[476/1210] CC obj/lib/freebl/freebl_static.rijndael.o
+[477/1210] CC obj/lib/freebl/mpi/freebl_static.mpmontg.o
+[478/1210] CC obj/lib/freebl/freebl_static.pqg.o
+[479/1210] CC obj/lib/freebl/freebl_static.sha_fast.o
+[480/1210] CC obj/lib/freebl/freebl_static.shvfy.o
+[481/1210] CC obj/lib/freebl/freebl_static.sysrand.o
+[482/1210] CC obj/lib/freebl/freebl_static.rsapkcs.o
+[483/1210] CC obj/lib/freebl/freebl_static.tlsprfalg.o
+[484/1210] CC obj/lib/freebl/freebl_static.rsa.o
+[485/1210] CC obj/lib/freebl/ecl/freebl_static.curve25519_32.o
+[486/1210] CC obj/lib/freebl/verified/freebl_static.Hacl_Poly1305_32.o
+[487/1210] CC obj/lib/freebl/verified/freebl_static.Hacl_Chacha20.o
+[488/1210] CC obj/lib/softoken/softokn_static.softkver.o
+[489/1210] CC obj/lib/freebl/mpi/freebl_static.mpi.o
+[490/1210] CC obj/lib/softoken/softokn_static.tlsprf.o
+[491/1210] CC obj/lib/freebl/deprecated/freebl_static.seed.o
+[492/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_secp521r1.o
+[493/1210] CC obj/lib/freebl/deprecated/freebl_static.alg2268.o
+[494/1210] CC obj/lib/softoken/softokn_static.sftkpars.o
+[495/1210] CC obj/lib/softoken/softokn_static.sftkmessage.o
+[496/1210] CC obj/lib/freebl/verified/freebl_static.Hacl_Chacha20Poly1305_32.o
+[497/1210] CC obj/lib/pk11wrap/pk11wrap_static.dev3hack.o
+[498/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11err.o
+[499/1210] CC obj/lib/softoken/softokn_static.sftkpwd.o
+[500/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11hpke.o
+[501/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11auth.o
+[502/1210] CC obj/lib/softoken/softokn_static.fipstest.o
+[503/1210] CC obj/lib/softoken/softokn_static.fipsaudt.o
+[504/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11akey.o
+[505/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11cxt.o
+[506/1210] CC obj/lib/softoken/softokn_static.jpakesftk.o
+[507/1210] CC obj/lib/softoken/softokn_static.lowkey.o
+[508/1210] CC obj/lib/softoken/softokn_static.kbkdf.o
+[509/1210] CC obj/lib/softoken/softokn_static.padbuf.o
+[510/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11cert.o
+[511/1210] CC obj/lib/softoken/softokn_static.sftkdhverify.o
+[512/1210] CC obj/lib/softoken/softokn_static.lowpbe.o
+[513/1210] CC obj/lib/softoken/softokn_static.fipstokn.o
+[514/1210] CC obj/lib/softoken/softokn_static.pkcs11u.o
+[515/1210] CC obj/lib/softoken/softokn_static.sftkhmac.o
+[516/1210] CC obj/lib/freebl/freeblpriv3.ldvector.o
+[517/1210] CC obj/lib/softoken/softokn_static.sdb.o
+[518/1210] CC obj/lib/softoken/softokn_static.sftkike.o
+[519/1210] CC obj/lib/freebl/freeblpriv3.jpake.o
+[520/1210] CC obj/lib/softoken/softokn_static.pkcs11.o
+[521/1210] CC obj/lib/freebl/freeblpriv3.md2.o
+[522/1210] CC obj/lib/freebl/mpi/freeblpriv3.mpcpucache.o
+[523/1210] CC obj/lib/freebl/freeblpriv3.md5.o
+[524/1210] CC obj/lib/softoken/softokn_static.sftkdb.o
+[525/1210] CC obj/lib/freebl/mpi/freeblpriv3.mplogic.o
+[526/1210] CC obj/lib/freebl/mpi/freeblpriv3.mp_gf2m.o
+[527/1210] CC obj/lib/freebl/ecl/freeblpriv3.ecp_secp384r1.o
+[528/1210] CC obj/lib/freebl/freeblpriv3.rawhash.o
+[529/1210] CC obj/lib/freebl/mpi/freeblpriv3.mpprime.o
+[530/1210] CC obj/lib/freebl/mpi/freeblpriv3.mpmontg.o
+[531/1210] CC obj/lib/freebl/freeblpriv3.rijndael.o
+[532/1210] CC obj/lib/freebl/freeblpriv3.shvfy.o
+[533/1210] CC obj/lib/freebl/freeblpriv3.sha_fast.o
+[534/1210] CC obj/lib/freebl/freeblpriv3.pqg.o
+[535/1210] CC obj/lib/freebl/freeblpriv3.sysrand.o
+[536/1210] CC obj/lib/freebl/freeblpriv3.rsa.o
+[537/1210] CC obj/lib/freebl/freeblpriv3.tlsprfalg.o
+[538/1210] CC obj/lib/freebl/freeblpriv3.rsapkcs.o
+[539/1210] CC obj/lib/freebl/freeblpriv3.nsslowhash.o
+[540/1210] CC obj/lib/freebl/freeblpriv3.stubs.o
+[541/1210] CC obj/lib/freebl/verified/freeblpriv3.Hacl_Chacha20.o
+[542/1210] CC obj/lib/freebl/ecl/freeblpriv3.curve25519_32.o
+[543/1210] CC obj/lib/softoken/softokn_static.pkcs11c.o
+[544/1210] CC obj/coreconf/freeblpriv3.empty.o
+[545/1210] CC obj/lib/freebl/mpi/freeblpriv3.mpi.o
+[546/1210] AR libsoftokn_static.a
+[547/1210] CC obj/lib/freebl/verified/freeblpriv3.Hacl_Poly1305_32.o
+[548/1210] CC obj/lib/freebl/freebl_static.aeskeywrap.o
+[549/1210] CC obj/lib/freebl/freebl_static.alghmac.o
+[550/1210] CC obj/lib/freebl/freebl_static.cmac.o
+[551/1210] CC obj/lib/freebl/freebl_static.arcfive.o
+[552/1210] CC obj/lib/freebl/deprecated/freeblpriv3.seed.o
+[553/1210] CC obj/lib/freebl/verified/freeblpriv3.Hacl_Chacha20Poly1305_32.o
+[554/1210] CC obj/lib/freebl/freebl_static.crypto_primitives.o
+[555/1210] CC obj/lib/freebl/deprecated/freeblpriv3.alg2268.o
+[556/1210] CC obj/lib/freebl/freebl_static.sha512.o
+[557/1210] CC obj/lib/freebl/freebl_static.chacha20poly1305.o
+[558/1210] CC obj/lib/freebl/freebl_static.arcfour.o
+[559/1210] CC obj/lib/freebl/freebl_static.cts.o
+[560/1210] CC obj/lib/freebl/freebl_static.desblapi.o
+[561/1210] CC obj/lib/freebl/freebl_static.des.o
+[562/1210] CC obj/lib/freebl/freebl_static.dh.o
+[563/1210] CC obj/lib/freebl/freebl_static.ctr.o
+[564/1210] CC obj/lib/freebl/freebl_static.drbg.o
+[565/1210] CC obj/lib/freebl/ecl/freebl_static.ec_naf.o
+[566/1210] CC obj/lib/freebl/freebl_static.ecdecode.o
+[567/1210] CC obj/lib/freebl/freebl_static.dsa.o
+[568/1210] CC obj/lib/freebl/ecl/freebl_static.ecl.o
+[569/1210] CC obj/lib/freebl/ecl/freebl_static.ecl_mult.o
+[570/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_25519.o
+[571/1210] CC obj/lib/freebl/freebl_static.blake2b.o
+[572/1210] CC obj/lib/freebl/freebl_static.ec.o
+[573/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_384.o
+[574/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_256.o
+[575/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_521.o
+[576/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_aff.o
+[577/1210] CC obj/lib/freebl/ecl/freebl_static.ecl_gf.o
+[578/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11pk12.o
+[579/1210] CC obj/lib/freebl/freebl_static.camellia.o
+[580/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11pqg.o
+[581/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11sdr.o
+[582/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11pbe.o
+[583/1210] CC obj/lib/freebl/ecl/freebl_static.ecp_256_32.o
+[584/1210] ACTION freebl3: generate_mapfile_9c9068a5fd4646d953a29a92bbd3e903
+[585/1210] AR libfreebl_static.a
+[586/1210] CC obj/coreconf/freebl3.empty.o
+[587/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11pars.o
+[588/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11obj.o
+[589/1210] CC obj/lib/freebl/freebl3.lowhash_vector.o
+[590/1210] CC obj/lib/cryptohi/cryptohi.sechash.o
+[591/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11util.o
+[592/1210] CC obj/lib/cryptohi/cryptohi.dsautil.o
+[593/1210] SOLINK /root/nss-3.62/dist/Release/lib/libfreebl3.so
+[594/1210] CC obj/lib/dev/nssdev.devslot.o
+[595/1210] CC obj/lib/dev/nssdev.ckhelper.o
+[596/1210] CC obj/lib/crmf/crmf.asn1cmn.o
+[597/1210] CC obj/lib/cryptohi/cryptohi.seckey.o
+[598/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11skey.o
+[599/1210] CC obj/lib/pk11wrap/pk11wrap_static.pk11slot.o
+[600/1210] CC obj/lib/crmf/crmf.challcli.o
+[601/1210] AR libpk11wrap_static.a
+[602/1210] CC obj/lib/dev/nssdev.devutil.o
+[603/1210] CC obj/lib/crmf/crmf.cmmfasn1.o
+[604/1210] CC obj/lib/crmf/crmf.cmmfchal.o
+[605/1210] CC obj/lib/cryptohi/cryptohi.secsign.o
+[606/1210] CC obj/lib/dev/nssdev.devtoken.o
+[607/1210] CC obj/lib/crmf/crmf.cmmfresp.o
+[608/1210] AR libnssdev.a
+[609/1210] CC obj/lib/cryptohi/cryptohi.secvfy.o
+[610/1210] CC obj/lib/crmf/crmf.cmmfrec.o
+[611/1210] AR libcryptohi.a
+[612/1210] CC obj/lib/crmf/crmf.crmfdec.o
+[613/1210] CC obj/lib/crmf/crmf.crmfenc.o
+[614/1210] CC obj/lib/freebl/freebl.loader.o
+[615/1210] CC obj/lib/crmf/crmf.crmfget.o
+[616/1210] CC obj/lib/crmf/crmf.crmftmpl.o
+[617/1210] CC obj/lib/crmf/crmf.encutil.o
+[618/1210] AR libfreebl.a
+[619/1210] CC obj/lib/crmf/crmf.crmfcont.o
+[620/1210] CC obj/lib/crmf/crmf.crmfpop.o
+[621/1210] CC obj/lib/crmf/crmf.crmfreq.o
+[622/1210] CC obj/lib/crmf/crmf.respcmn.o
+[623/1210] CC obj/lib/crmf/crmf.respcli.o
+[624/1210] CC obj/lib/certdb/certdb.certxutl.o
+[625/1210] CC obj/lib/certdb/certdb.polcyxtn.o
+[626/1210] CC obj/lib/certdb/certdb.xauthkid.o
+[627/1210] CC obj/lib/certdb/certdb.xbsconst.o
+[628/1210] CC obj/lib/certdb/certdb.secname.o
+[629/1210] CC obj/lib/ckfw/nssckfw.find.o
+[630/1210] CC obj/lib/ckfw/nssckfw.crypto.o
+[631/1210] CC obj/lib/crmf/crmf.servget.o
+[632/1210] CC obj/lib/certdb/certdb.genname.o
+[633/1210] CC obj/lib/ckfw/nssckfw.hash.o
+[634/1210] AR libcrmf.a
+[635/1210] CC obj/lib/certdb/certdb.stanpcertdb.o
+[636/1210] CC obj/lib/ckfw/nssckfw.mutex.o
+[637/1210] CC obj/lib/ckfw/nssckfw.instance.o
+[638/1210] CC obj/lib/certdb/certdb.crl.o
+[639/1210] CC obj/lib/ckfw/nssckfw.mechanism.o
+[640/1210] CC obj/lib/ckfw/nssckfw.sessobj.o
+[641/1210] CC obj/lib/ckfw/nssckfw.slot.o
+[642/1210] CC obj/lib/certhigh/certhi.certhtml.o
+[643/1210] CC obj/lib/ckfw/nssckfw.object.o
+[644/1210] CC obj/lib/ckfw/nssckfw.session.o
+[645/1210] CC obj/lib/ckfw/nssckfw.token.o
+[646/1210] CC obj/lib/certhigh/certhi.certreq.o
+[647/1210] CC obj/lib/certhigh/certhi.certvfypkix.o
+[648/1210] CC obj/lib/certhigh/certhi.crlv2.o
+[649/1210] CC obj/lib/certhigh/certhi.certhigh.o
+[650/1210] CC obj/lib/certhigh/certhi.xcrldist.o
+[651/1210] CC obj/lib/certhigh/certhi.ocspsig.o
+[652/1210] CC obj/lib/freebl/freeblpriv3.sha512.o
+[653/1210] CC obj/lib/certdb/certdb.xconst.o
+[654/1210] CC obj/lib/certdb/certdb.certv3.o
+[655/1210] CC obj/lib/base/nssb.arena.o
+[656/1210] CC obj/lib/base/nssb.error.o
+[657/1210] CC obj/lib/certhigh/certhi.certvfy.o
+[658/1210] SOLINK /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so
+FAILED: /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.TOC 
+if [ ! -e /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so -o ! -e /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.TOC ]; then arm-linux-gnueabihf-gcc -shared -Wl,-rpath-link=.lib --sysroot=/opt/x-tools/arm-remarkable-linux-gnueabihf/arm-remarkable-linux-gnueabihf/sysroot -Wl,-Bsymbolic -Wl,--version-script,obj/lib/freebl/freeblpriv3.gen/out.freebl_hash_vector.def -Wl,--gc-sections -Wl,-z,defs -z noexecstack -o /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so -Wl,-soname=libfreeblpriv3.so @/root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.rsp && { readelf -d /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so | grep SONAME ; nm -gD -f p /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so | cut -f1-2 -d' '; } > /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.TOC; else arm-linux-gnueabihf-gcc -shared -Wl,-rpath-link=.lib --sysroot=/opt/x-tools/arm-remarkable-linux-gnueabihf/arm-remarkable-linux-gnueabihf/sysroot -Wl,-Bsymbolic -Wl,--version-script,obj/lib/freebl/freeblpriv3.gen/out.freebl_hash_vector.def -Wl,--gc-sections -Wl,-z,defs -z noexecstack -o /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so -Wl,-soname=libfreeblpriv3.so @/root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.rsp && { readelf -d /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so | grep SONAME ; nm -gD -f p /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so | cut -f1-2 -d' '; } > /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.tmp && if ! cmp -s /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.tmp /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.TOC; then mv /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.tmp /root/nss-3.62/dist/Release/lib/libfreeblpriv3.so.TOC ; fi; fi
+/opt/x-tools/arm-remarkable-linux-gnueabihf/lib/gcc/arm-remarkable-linux-gnueabihf/8.3.0/../../../../arm-remarkable-linux-gnueabihf/bin/ld.bfd: obj/lib/freebl/freeblpriv3.gcm.o: in function `gcmHash_InitContext':
+gcm.c:(.text.gcmHash_InitContext+0xa4): undefined reference to `gcm_HashInit_hw'
+/opt/x-tools/arm-remarkable-linux-gnueabihf/lib/gcc/arm-remarkable-linux-gnueabihf/8.3.0/../../../../arm-remarkable-linux-gnueabihf/bin/ld.bfd: obj/lib/freebl/freeblpriv3.gcm.o: in function `gcmHash_Final':
+gcm.c:(.text.gcmHash_Final+0xdc): undefined reference to `gcm_HashWrite_hw'
+/opt/x-tools/arm-remarkable-linux-gnueabihf/lib/gcc/arm-remarkable-linux-gnueabihf/8.3.0/../../../../arm-remarkable-linux-gnueabihf/bin/ld.bfd: obj/lib/freebl/freeblpriv3.gcm.o: in function `gcmHash_Reset':
+gcm.c:(.text.gcmHash_Reset+0x90): undefined reference to `gcm_HashZeroX_hw'
+collect2: error: ld returned 1 exit status
+[659/1210] CC obj/lib/base/nssb.errorval.o
+[660/1210] CC obj/lib/ckfw/nssckfw.wrap.o
+[661/1210] CC obj/lib/base/nssb.hashops.o
+[662/1210] CC obj/lib/base/nssb.hash.o
+[663/1210] CC obj/lib/base/nssb.item.o
+[664/1210] CC obj/lib/certdb/certdb.alg1485.o
+[665/1210] CC obj/lib/certdb/certdb.certdb.o
+[666/1210] CC obj/lib/certhigh/certhi.ocsp.o
+[667/1210] CC obj/lib/sqlite/sqlite.sqlite3.o
+ninja: build stopped: subcommand failed.
